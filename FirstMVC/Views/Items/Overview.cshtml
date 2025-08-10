@@ -1,6 +1,13 @@
 ﻿@model FirstMVC.Models.Item
 
 @{
+    var items = new List<String> { "Tab", "Desktop", "Andoid", "Mac" };
 }
+
 <p>ID:@Model.Id</p>
 <p>Name:@Model.Name</p>
+
+@foreach(var item in items)
+{
+    <p>@item</p>
+}

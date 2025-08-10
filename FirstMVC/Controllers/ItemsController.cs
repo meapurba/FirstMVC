@@ -10,5 +10,10 @@ namespace FirstMVC.Controllers
             var item=new Item() { Id = 1 ,Name="Laptop"};
             return View(item);
         }
+
+        public IActionResult Edit(int id)
+        {
+            return Content("Id=" + id);
+        }
     }
 }
