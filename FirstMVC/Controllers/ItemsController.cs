@@ -36,5 +36,16 @@ namespace FirstMVC.Controllers
             return View(item);
 
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+
+            return RedirectToAction("Create");
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            return RedirectToAction("Index");
+        }
     }
 }
