@@ -1,19 +1,40 @@
-﻿using FirstMVC.Models;
+﻿using FirstMVC.Data;
+using FirstMVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace FirstMVC.Controllers
 {
     public class ItemsController : Controller
     {
-        public IActionResult Overview()
+        private readonly MyDbContext _dbcontext;
+
+        public ItemsController(MyDbContext dbcontext)
         {
-            var item=new Item() { Id = 1 ,Name="Laptop"};
-            return View(item);
+            _dbcontext = dbcontext;
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Index()
         {
-            return Content("Id=" + id);
+            var items=await _dbcontext.Items.ToListAsync();
+            return View(items);
+        }
+
+        public IActionResult Create() { 
+
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create([Bind("Id,Name,Price")] Item item)
+        {
+            if (ModelState.IsValid) { 
+                _dbcontext.Items.Add(item);
+                await _dbcontext.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(item);
+
         }
     }
 }
