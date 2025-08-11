@@ -25,6 +25,7 @@ namespace FirstMVC.Controllers
 
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Id,Name,Price")] Item item)
         {
@@ -39,8 +40,21 @@ namespace FirstMVC.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
+            var item=await _dbcontext.Items.FirstOrDefaultAsync(x=>x.Id==id);
+            return View(item);
+        }
 
-            return RedirectToAction("Create");
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id,[Bind("Id,Name,Price")] Item item)
+        {
+            if (ModelState.IsValid)
+            {
+                _dbcontext.Items.Update(item);
+                await _dbcontext.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(item);
+
         }
 
         public async Task<IActionResult> Delete(int id)
