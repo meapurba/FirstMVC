@@ -59,6 +59,11 @@ namespace FirstMVC.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
+            var item = await _dbcontext.Items.FirstOrDefaultAsync(x => x.Id == id);
+            if (item != null) { 
+                _dbcontext.Items.Remove(item);
+                await _dbcontext.SaveChangesAsync();
+            }
             return RedirectToAction("Index");
         }
     }
